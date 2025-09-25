@@ -1,0 +1,35 @@
+steps:
+  # Check backend accessibility first (optional)
+  - name: 'curlimages/curl'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        if [ -n "${_BACKEND_URL}" ]; then curl -sf "${_BACKEND_URL}/health"; else echo 'No _BACKEND_URL provided, skipping check'; fi
+  # Install deps and build (inject API base URL)
+  - name: 'gcr.io/cloud-builders/npm'
+    dir: '.'
+    args: ['ci']
+  - name: 'gcr.io/cloud-builders/npm'
+    dir: '.'
+    env:
+      - 'REACT_APP_BASE_URL=${_BACKEND_URL}'
+    args: ['run', 'build']
+  # Sync to GCS bucket (hosting)
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['-m', 'rsync', '-r', '-d', 'build', 'gs://${_BUCKET}']
+  # Set cache-control for assets
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['-m', 'setmeta', '-h', 'Cache-Control:public,max-age=3600', 'gs://${_BUCKET}/static/**']
+  # Optionally invalidate Cloud CDN (if using backend bucket with LB)
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ -n "${_URL_MAP}" ]; then gcloud compute url-maps invalidate-cdn-cache ${_URL_MAP} --path '/*' --quiet; else echo 'Skipping CDN invalidate'; fi
+substitutions:
+  _BUCKET: devops-ia-frontend-bucket
+  _URL_MAP: ''
+  _BACKEND_URL: ''
+timeout: 1200s
