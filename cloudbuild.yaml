@@ -14,11 +14,10 @@ steps:
     dir: '.'
     env:
       - 'REACT_APP_BASE_URL=${_BACKEND_URL}'
-      - 'PUBLIC_URL=https://storage.googleapis.com/devops-ia-frontend-bucket'
     args: ['run', 'build']
-  # Sync to GCS bucket (hosting)
+  # Upload build contents to GCS bucket (hosting)
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-m', 'rsync', '-r', '-d', 'build', 'gs://${_BUCKET}']
+    args: ['-m', 'cp', '-r', 'build/*', 'gs://${_BUCKET}']
   # Set cache-control for assets
   - name: 'gcr.io/cloud-builders/gsutil'
     args: ['-m', 'setmeta', '-h', 'Cache-Control:public,max-age=3600', 'gs://${_BUCKET}/static/**']
