@@ -7,6 +7,7 @@ instance_class: F1
 env_variables:
   NODE_ENV: production
   NPM_CONFIG_PRODUCTION: false
+  REACT_APP_BASE_URL: https://devops-ia-backend-226162055882.asia-south1.run.app
 # Automatic scaling configuration
 automatic_scaling:
   min_instances: 0

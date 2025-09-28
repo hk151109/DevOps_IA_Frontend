@@ -1,6 +1,10 @@
 steps:
-  # Install dependencies
+  # Install dependencies with npm
   - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+
+  # Install dependencies with yarn
+  - name: 'gcr.io/cloud-builders/yarn'
     args: ['install']
 
   # Build React app
@@ -12,7 +16,7 @@ steps:
 
   # Deploy to App Engine
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['app', 'deploy', '--quiet', '--stop-previous-version']
+    args: ['app', 'deploy', '--quiet']
 
 options:
   logging: CLOUD_LOGGING_ONLY
