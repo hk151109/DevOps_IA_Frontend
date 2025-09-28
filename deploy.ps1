@@ -7,7 +7,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$PROJECT_ID = "devops-ia-434015"  # Replace with your actual project ID
+$PROJECT_ID = "uniqscan"  # Replace with your actual project ID
 $BACKEND_URL = "https://devops-ia-backend-226162055882.asia-south1.run.app"
 
 Write-Host "🚀 Starting deployment to Google App Engine..." -ForegroundColor Green
