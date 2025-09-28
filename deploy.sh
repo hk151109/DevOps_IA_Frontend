@@ -6,7 +6,7 @@
 set -e
 
 ENVIRONMENT=${1:-"production"}
-PROJECT_ID="uniqscan"  # Replace with your actual project ID
+PROJECT_ID="uniqscan"  # Corrected Project ID
 BACKEND_URL="https://devops-ia-backend-226162055882.asia-south1.run.app"
 
 echo "🚀 Starting deployment to Google App Engine..."
