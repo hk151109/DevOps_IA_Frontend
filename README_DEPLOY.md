@@ -1,6 +1,23 @@
-Quick deploy (GCP)
+# Frontend Deployment to Google App Engine
 
-- Builds React static site and syncs to GCS bucket.
-- Set _BUCKET substitution to your bucket name.
-- Optional: set _URL_MAP to invalidate Cloud CDN.
-- Ensure REACT_APP_BASE_URL is set at build time (use Cloud Build trigger env vars).
+## Simple Deployment
+
+### Prerequisites
+- Google Cloud SDK installed
+- App Engine enabled in your project
+
+### Deploy with Cloud Build (Recommended)
+```bash
+gcloud builds submit
+```
+
+### Manual Deploy
+```bash
+npm ci
+npm run build
+gcloud app deploy --quiet
+```
+
+## Configuration
+- Backend URL: Set in `.env` file
+- App will be available at: `https://PROJECT_ID.uc.r.appspot.com`

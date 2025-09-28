@@ -1,0 +1,11 @@
+runtime: nodejs21
+# Environment variables
+env_variables:
+  NODE_ENV: production
+
+# Automatic scaling configuration
+automatic_scaling:
+  min_instances: 0
+  max_instances: 10
+  target_cpu_utilization: 0.6
+  target_throughput_utilization: 0.6

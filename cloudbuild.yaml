@@ -1,35 +1,20 @@
 steps:
-  # Check backend accessibility first (optional)
-  - name: 'curlimages/curl'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        if [ -n "${_BACKEND_URL}" ]; then curl -sf "${_BACKEND_URL}/health"; else echo 'No _BACKEND_URL provided, skipping check'; fi
-  # Install deps and build (inject API base URL)
+  # Install dependencies
   - name: 'gcr.io/cloud-builders/npm'
-    dir: '.'
     args: ['ci']
+
+  # Build React app
   - name: 'gcr.io/cloud-builders/npm'
-    dir: '.'
     env:
       - 'REACT_APP_BASE_URL=${_BACKEND_URL}'
+      - 'NODE_ENV=production'
     args: ['run', 'build']
-  # Upload build contents to GCS bucket (hosting)
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-m', 'cp', '-r', 'build/*', 'gs://${_BUCKET}']
-  # Set cache-control for assets
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['-m', 'setmeta', '-h', 'Cache-Control:public,max-age=3600', 'gs://${_BUCKET}/static/**']
-  # Optionally invalidate Cloud CDN (if using backend bucket with LB)
+
+  # Deploy to App Engine
   - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        if [ -n "${_URL_MAP}" ]; then gcloud compute url-maps invalidate-cdn-cache ${_URL_MAP} --path '/*' --quiet; else echo 'Skipping CDN invalidate'; fi
+    args: ['app', 'deploy', '--quiet']
+
 substitutions:
-  _BUCKET: devops-ia-frontend-bucket
-  _URL_MAP: ''
-  _BACKEND_URL: ''
+  _BACKEND_URL: 'https://devops-ia-backend-226162055882.asia-south1.run.app'
+
 timeout: 1200s
