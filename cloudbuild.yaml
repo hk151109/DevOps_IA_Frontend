@@ -17,4 +17,7 @@ steps:
 substitutions:
   _BACKEND_URL: 'https://devops-ia-backend-226162055882.asia-south1.run.app'
 
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 timeout: 1200s
