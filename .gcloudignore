@@ -15,6 +15,9 @@
 # Node.js dependencies:
 node_modules/
 
+# Package manager files
+yarn.lock
+
 # React build artifacts that we don't need to upload (we'll build on GAE)
 src/
 public/

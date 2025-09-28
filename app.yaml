@@ -1,7 +1,9 @@
-runtime: nodejs21
+runtime: nodejs22
+
 # Environment variables
 env_variables:
   NODE_ENV: production
+  NPM_CONFIG_PRODUCTION: false
 
 # Automatic scaling configuration
 automatic_scaling:
