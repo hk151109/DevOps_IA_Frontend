@@ -3,9 +3,9 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
 
-  # Install dependencies with yarn
-  - name: 'gcr.io/cloud-builders/yarn'
-    args: ['install']
+  # # Install dependencies with yarn
+  # - name: 'gcr.io/cloud-builders/yarn'
+  #   args: ['install']
 
   # Build React app
   - name: 'gcr.io/cloud-builders/npm'
