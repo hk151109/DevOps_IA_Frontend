@@ -7,7 +7,6 @@ instance_class: F1
 env_variables:
   NODE_ENV: production
   NPM_CONFIG_PRODUCTION: false
-  REACT_APP_BASE_URL: https://devops-ia-backend-226162055882.asia-south1.run.app
 # Automatic scaling configuration
 automatic_scaling:
   min_instances: 0
@@ -31,12 +30,10 @@ readiness_check:
   success_threshold: 2
   app_start_timeout_sec: 300
 
-# Static file handlers (optional, since Express handles this)
+# Let the Node.js server handle all traffic.
+# App Engine will automatically start the server using the "start" script
+# in your package.json.
 handlers:
-- url: /static
-  static_dir: build/static
-  secure: always
-  
 - url: /.*
   script: auto
   secure: always

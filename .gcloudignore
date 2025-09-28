@@ -5,8 +5,5 @@
 # Don't upload the node_modules directory. It will be created in the cloud.
 node_modules/
 
-# Don't upload the production build. It will be created in the cloud.
-build/
-
 # Other files to ignore
 .env
